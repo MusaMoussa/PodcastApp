@@ -21,6 +21,7 @@ namespace PodcastApp.Data
         public virtual Podcast Podcast { get; set; }
 
         [Required]
+        [Range(0, 5)]
         public double Rating { get; set; }
 
         [Required]
