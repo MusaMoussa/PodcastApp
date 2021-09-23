@@ -54,11 +54,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlayListItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PodcastApp.Data\PodcastApp.Data.csproj">
+      <Project>{9af2c10f-0751-408d-82ac-9e9072eaaeef}</Project>
+      <Name>PodcastApp.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PodcastApp.Models\PodcastApp.Models.csproj">
+      <Project>{88ef89df-84ed-49d7-a5ba-804a5fe96f93}</Project>
+      <Name>PodcastApp.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
