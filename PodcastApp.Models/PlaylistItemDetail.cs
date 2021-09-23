@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace PodcastApp.Models
 {
-	class PlaylistItemDetail
+	public class PlaylistItemDetail
 	{
-	}
+        public Guid UserId { get; set; }
+
+        public int PodcastId { get; set; }
+
+        public string EpisodeId { get; set; }
+
+        public int PlaybackPositionInSeconds { get; set; }
+    }
 }

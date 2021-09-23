@@ -1,4 +1,5 @@
 ﻿using PodcastApp.Data;
+using PodcastApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace PodcastApp.Services
 		}
 
 		// POST -- CREATE
-		public bool CreatePlayListItem(PlaylistItemCreate model)
+		public bool CreatePlaylistItem(PlaylistItemCreate model)
 		{
 			var entity =
 				new PlaylistItem()
@@ -58,7 +59,7 @@ namespace PodcastApp.Services
 		}
 
 		//GET BY ID ---  READ BY ID
-		public NoteDetail GetNoteById(int id)
+		public PlaylistItemDetail GetPlaylistItemById(int id)
 		{
 			using (var ctx = new ApplicationDbContext())
 			{
@@ -78,7 +79,7 @@ namespace PodcastApp.Services
 		}
 
 		//UPDATE
-		public bool UpdateNote(PlaylistItemEdit model)
+		public bool UpdatePlaylistItem(PlaylistItemEdit model)
 		{
 			using (var ctx = new ApplicationDbContext())
 			{
@@ -96,7 +97,7 @@ namespace PodcastApp.Services
 		}
 
 		// DELETE
-		public bool DeleteNote(int PlaylistItemId)
+		public bool DeletePlaylistItem(int PlaylistItemId)
 		{
 			using (var ctx = new ApplicationDbContext())
 			{
