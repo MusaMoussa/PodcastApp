@@ -22,36 +22,35 @@ namespace PodcastApp.Services
 			var entity =
 				new PlaylistItem()
 				{
-					OwnerId = _userId,
-					Title = model.Title,
-					Content = model.Content,
-					CreatedUtc = DateTimeOffset.Now,
-					CategoryId = model.CategoryId
+					UserId = _userId,
+					PodcastId = model.PodcastId,
+					EpisodeId = model.EpisodeId,
+					PlaybackPositionInSeconds = model.PlaybackPositionInSeconds
 				};
 
 			using (var ctx = new ApplicationDbContext())
 			{
-				ctx.Notes.Add(entity);
+				ctx.PlaylistItems.Add(entity);
 				return ctx.SaveChanges() == 1;
 			}
 		}
 
 		// GET -- READ
-		public IEnumerable<NoteListItem> GetNotes()
+		public IEnumerable<PlaylistItem> GetPlaylistItems()
 		{
 			using (var ctx = new ApplicationDbContext())
 			{
 				var query =
 					ctx
-						.Notes
-						.Where(e => e.OwnerId == _userId)
+						.PlaylistItems
+						.Where(e => e.UserId == _userId)
 						.Select(
 							e =>
-								new NoteListItem
+								new PlaylistItem
 								{
-									NoteId = e.NoteId,
-									Title = e.Title,
-									CreatedUtc = e.CreatedUtc
+									Id = e.Id,
+									PodcastId = e.PodcastId,
+									EpisodeId = e.EpisodeId
 								}
 						);
 				return query.ToArray();
@@ -65,49 +64,48 @@ namespace PodcastApp.Services
 			{
 				var entity =
 					ctx
-						.Notes
-						.Single(e => e.NoteId == id && e.OwnerId == _userId);
+						.PlaylistItems
+						.Single(e => e.Id == id && e.UserId == _userId);
 				return
-					new NoteDetail
+					new PlaylistItemDetail
 					{
-						NoteId = entity.NoteId,
-						Title = entity.Title,
-						Content = entity.Content,
-						CreatedUtc = entity.CreatedUtc,
-						ModifiedUtc = entity.ModifiedUtc
+						UserId = _userId,
+						PodcastId = entity.PodcastId,
+						EpisodeId = entity.EpisodeId,
+						PlaybackPositionInSeconds = entity.PlaybackPositionInSeconds
 					};
 			}
 		}
 
 		//UPDATE
-		public bool UpdateNote(NoteEdit model)
+		public bool UpdateNote(PlaylistItemEdit model)
 		{
 			using (var ctx = new ApplicationDbContext())
 			{
 				var entity =
 					ctx
-						.Notes
-						.Single(e => e.NoteId == model.NoteId && e.OwnerId == _userId);
+						.PlaylistItems
+						.Single(e => e.Id == model.Id && e.UserId == _userId);
 
-				entity.Title = model.Title;
-				entity.Content = model.Content;
-				entity.ModifiedUtc = DateTimeOffset.UtcNow;
+				entity.PodcastId = model.PodcastId;
+				entity.EpisodeId = model.EpisodeId;
+				entity.PlaybackPositionInSeconds = model.PlaybackPositionInSeconds;
 
 				return ctx.SaveChanges() == 1;
 			}
 		}
 
 		// DELETE
-		public bool DeleteNote(int noteId)
+		public bool DeleteNote(int PlaylistItemId)
 		{
 			using (var ctx = new ApplicationDbContext())
 			{
 				var entity =
 					ctx
-						.Notes
-						.Single(e => e.NoteId == noteId && e.OwnerId == _userId);
+						.PlaylistItems
+						.Single(e => e.Id == PlaylistItemId && e.UserId == _userId);
 
-				ctx.Notes.Remove(entity);
+				ctx.PlaylistItems.Remove(entity);
 
 				return ctx.SaveChanges() == 1;
 			}
