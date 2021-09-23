@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using PodcastApp.Data;
+using PodcastApp.Models;
 using PodcastApp.Services;
 
 namespace PodcastApp.WebApi.Controllers
@@ -13,7 +14,12 @@ namespace PodcastApp.WebApi.Controllers
     [Authorize]
     public class ReviewController : ApiController
     {
-
+        private ReviewService CreateReviewService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var reviewService = new ReviewService(userId);
+            return reviewService;
+        }
         // GET: api/Review/5
         public IHttpActionResult Get()
         {
@@ -55,7 +61,7 @@ namespace PodcastApp.WebApi.Controllers
         {
             var service = CreateReviewService();
 
-            if (!service.DeleteReview(Review))
+            if (!service.DeleteReview(id))
                 return InternalServerError();
 
             return Ok();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PodcastApp.Data;
+using PodcastApp.Models;
 
 namespace PodcastApp.Services
 {
@@ -13,7 +14,7 @@ namespace PodcastApp.Services
 
         public ReviewService(Guid userId)
         {
-            _userId;
+            _userId = userId;
         }
 
         public bool CreateReview(ReviewCreate model)
@@ -24,7 +25,7 @@ namespace PodcastApp.Services
                     UserId = _userId,
                     Rating = model.Rating,
                     Text = model.Text,
-                    Podcast = model.Podcast
+                    PodcastId = model.PodcastId
                 };
 
             using (var ctx = new ApplicationDbContext())
@@ -48,9 +49,7 @@ namespace PodcastApp.Services
                                 {
                                     Id = e.Id,
                                     Rating = e.Rating,
-                                    Text = e.Text,
-                                    CreatedUtc = e.CreatedUtc
-
+                                    Text = e.Text
                                 }
                         );
                 return query.ToArray();

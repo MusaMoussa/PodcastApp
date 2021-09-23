@@ -9,7 +9,8 @@ namespace PodcastApp.Data
 {
     public class ReviewCreate
     {
-        public virtual Podcast Podcast { get; set; }
+        [Required]
+        public int PodcastId { get; set; }
 
         [Required]
         [MaxLength(500)]

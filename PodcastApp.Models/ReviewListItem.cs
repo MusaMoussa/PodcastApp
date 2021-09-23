@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace PodcastApp.Models
 {
-    class ReviewListItem
+    public class ReviewListItem
     {
         public int Id { get; set; }
         public double Rating { get; set; }
         public string Text { get; set; }
 
-        [Display(Name="Posted")]
-        public DateTimeOffset CreatedUtc { get; set; }
     }
 }
