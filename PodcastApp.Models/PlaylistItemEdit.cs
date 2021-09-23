@@ -12,12 +12,6 @@ namespace PodcastApp.Models
         [Required]
 		public int Id { get; set; }
 
-		[Required]
-        public int PodcastId { get; set; }
-
-        [Required]
-        public string EpisodeId { get; set; }
-
         [Required]
         public int PlaybackPositionInSeconds { get; set; }
     }

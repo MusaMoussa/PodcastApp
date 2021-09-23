@@ -88,8 +88,7 @@ namespace PodcastApp.Services
 						.PlaylistItems
 						.Single(e => e.Id == model.Id && e.UserId == _userId);
 
-				entity.PodcastId = model.PodcastId;
-				entity.EpisodeId = model.EpisodeId;
+
 				entity.PlaybackPositionInSeconds = model.PlaybackPositionInSeconds;
 
 				return ctx.SaveChanges() == 1;
