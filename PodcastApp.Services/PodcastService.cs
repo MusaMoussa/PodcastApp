@@ -49,8 +49,6 @@ namespace PodcastApp.Services
                     ImageUrl = podcast.ImageUrl,
                     Category = podcast.Category,
                     Rating = podcast.Rating,
-                    XmlCache = podcast.XmlCache,
-                    EpisodeCount = podcast.Episodes.Count()
                 };
             }
         }
