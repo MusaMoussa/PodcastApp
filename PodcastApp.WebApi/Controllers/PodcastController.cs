@@ -56,6 +56,11 @@ namespace PodcastApp.WebApi.Controllers
             }
 
             var service = CreatePodcastService();
+            
+            if (service.HasRssUrl(model.RssUrl))
+            {
+                return BadRequest("Podcast is already in the database!");
+            }
 
             try
             {

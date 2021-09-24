@@ -17,6 +17,14 @@ namespace PodcastApp.Services
             _userId = userId;
         }
 
+        public bool HasRssUrl(string rssUrl)
+        {
+            using (var context = ApplicationDbContext.Create())
+            {
+                return context.Podcasts.Any(p => p.RssUrl == rssUrl);
+            }
+        }
+
         public bool CreatePodcast(PodcastCreate model)
         {
             var podcast = Podcast.CreateFromRssUrl(model.RssUrl);
