@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using PodcastApp.Models;
+using PodcastApp.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,8 +10,15 @@ using System.Web.Http;
 
 namespace PodcastApp.WebApi.Controllers
 {
+    [Authorize]
     public class PodcastController : ApiController
     {
+        private PodcastService CreatePodcastService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            return new PodcastService(userId);
+        }
+
         // GET: api/Podcast
         public IEnumerable<string> Get()
         {
@@ -16,14 +26,44 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET: api/Podcast/5
-        public string Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            var service = CreatePodcastService();
+            var podcast = service.GetPodcastById(id);
+
+            if (podcast == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(podcast);
+            }
         }
 
         // POST: api/Podcast
-        public void Post([FromBody]string value)
+        public IHttpActionResult Post([FromBody] PodcastCreate model)
         {
+            if (model == null)
+            {
+                return BadRequest("Http Request Body cannot be empty!");
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var service = CreatePodcastService();
+
+            if (service.CreatePodcast(model))
+            {
+                return Ok();
+            }
+            else
+            {
+                return InternalServerError();
+            }
         }
 
         // PUT: api/Podcast/5
