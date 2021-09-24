@@ -2,6 +2,7 @@
 using PodcastApp.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace PodcastApp.Services
         {
             using (var context = ApplicationDbContext.Create())
             {
-                var podcast = context.Podcasts.FirstOrDefault(p => p.Id == id);
+                var podcast = context.Podcasts.Find(id);
 
                 if (podcast == null)
                 {
