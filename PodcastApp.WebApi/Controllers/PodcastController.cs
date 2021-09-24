@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Xml;
 
 namespace PodcastApp.WebApi.Controllers
 {
@@ -56,13 +57,24 @@ namespace PodcastApp.WebApi.Controllers
 
             var service = CreatePodcastService();
 
-            if (service.CreatePodcast(model))
+            try
             {
-                return Ok();
+                if (service.CreatePodcast(model))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return InternalServerError();
+                }
             }
-            else
+            catch (WebException exception)
             {
-                return InternalServerError();
+                return BadRequest($"Using RssUrl: {model.RssUrl}, {exception.Message}");
+            }
+            catch (XmlException)
+            {
+                return BadRequest("Xml Read Error");
             }
         }
 
