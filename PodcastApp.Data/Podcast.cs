@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -24,7 +25,7 @@ namespace PodcastApp.Data
                 Description = channel.Element(_itunes + "summary").Value.Trim(),
                 Author = channel.Element(_itunes + "author").Value.Trim(),
                 ImageUrl = channel.Element("image").Element("url").Value.Trim(),
-                Category = channel.Element(_itunes + "category").Value.Trim()
+                Category = channel.Element(_itunes + "category").Attribute("text").Value.Trim()
             };
 
             return podcast;
@@ -37,6 +38,7 @@ namespace PodcastApp.Data
         public string RssUrl { get; set; }
 
         [Required]
+        [Column(TypeName ="xml")]
         public string XmlCache { get; set; }
 
         [Required]
@@ -70,7 +72,7 @@ namespace PodcastApp.Data
             }
         }
 
-        public double Rating => Reviews.Average(review => review.Rating);
+        public double Rating => Reviews.Any() ? Reviews.Average(review => review.Rating) : 0;
 
         public virtual List<Review> Reviews { get; set; }
         public virtual List<Subscription> Subscriptions { get; set; }
@@ -86,7 +88,7 @@ namespace PodcastApp.Data
                 Description = item.Element("description").Value,
                 PublishDate = DateTimeOffset.Parse(item.Element("pubDate").Value),
                 AudioUrl = item.Element("enclosure").Attribute("url").Value,
-                ImageUrl = item.Element(_itunes + "image").Attribute("href").Value,
+                ImageUrl = item.Element(_itunes + "image")?.Attribute("href").Value,
                 WebsiteUrl = item.Element("link").Value
             });
 
