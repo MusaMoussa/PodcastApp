@@ -56,6 +56,27 @@ namespace PodcastApp.Services
             }
         }
 
+        public IEnumerable<ReviewListItem> GetReviewsByPodcastId(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Reviews
+                        .Where(e => e.PodcastId == id)
+                        .Select(
+                            e =>
+                                new ReviewListItem
+                                {
+                                    Id = e.Id,
+                                    Rating = e.Rating,
+                                    Text = e.Text
+                                }
+                        );
+                return query.ToArray();
+            }
+        }
+
         public bool UpdateReview(ReviewEdit model)
         {
             using (var ctx = new ApplicationDbContext())

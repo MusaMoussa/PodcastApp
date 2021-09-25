@@ -28,6 +28,13 @@ namespace PodcastApp.WebApi.Controllers
             return Ok(reviews);
         }
 
+        public IHttpActionResult Get(int id)
+        {
+            ReviewService reviewService = CreateReviewService();
+            var reviews = reviewService.GetReviewsByPodcastId(id);
+            return Ok(reviews);
+        }
+
         // POST: api/Review
         public IHttpActionResult Post(ReviewCreate review)
         {

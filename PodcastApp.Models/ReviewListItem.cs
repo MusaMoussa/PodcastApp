@@ -13,5 +13,6 @@ namespace PodcastApp.Models
         public double Rating { get; set; }
         public string Text { get; set; }
 
+
     }
 }
