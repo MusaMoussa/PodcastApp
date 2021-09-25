@@ -37,6 +37,21 @@ namespace PodcastApp.Services
             }
         }
 
+        public IEnumerable<PodcastListItem> GetAllPodcasts()
+        {
+            using (var context = ApplicationDbContext.Create())
+            {
+                var query = context.Podcasts.Select(podcast => new PodcastListItem()
+                {
+                    Id = podcast.Id,
+                    Title = podcast.Title,
+                    WebsiteUrl = podcast.WebsiteUrl
+                });
+
+                return query.ToArray();
+            }
+        }
+
         public PodcastDetail GetPodcastById(int id)
         {
             using (var context = ApplicationDbContext.Create())

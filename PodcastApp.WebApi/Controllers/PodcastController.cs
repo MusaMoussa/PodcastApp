@@ -21,9 +21,11 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET: api/Podcast
-        public IEnumerable<string> Get()
+        public IHttpActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var service = CreatePodcastService();
+            var podcasts = service.GetAllPodcasts();
+            return Ok(podcasts);
         }
 
         // GET: api/Podcast/5
