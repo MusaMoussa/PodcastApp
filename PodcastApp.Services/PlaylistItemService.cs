@@ -51,13 +51,9 @@ namespace PodcastApp.Services
                             e =>
                                 new PlaylistItemDetail
                                 {
-                                    Id = e.Id,
                                     UserId = e.UserId,
                                     PodcastId = e.PodcastId,
-                                    PodcastTitle = e.Podcast.Title,
                                     EpisodeId = e.EpisodeId,
-                                    EpisodeTitle = e.Podcast.GetEpisode(e.EpisodeId).Title,
-                                    AudioUrl = e.Podcast.GetEpisode(e.EpisodeId).AudioUrl,
                                     PlaybackPositionInSeconds = e.PlaybackPositionInSeconds
                                 }
                         );
