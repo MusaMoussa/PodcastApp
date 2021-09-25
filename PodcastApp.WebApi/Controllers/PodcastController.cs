@@ -91,8 +91,18 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // DELETE: api/Podcast/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            var service = CreatePodcastService();
+            
+            if (service.DeletePodcast(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return InternalServerError();
+            }
         }
     }
 }

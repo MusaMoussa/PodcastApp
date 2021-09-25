@@ -77,5 +77,21 @@ namespace PodcastApp.Services
                 };
             }
         }
+
+        public bool DeletePodcast(int id)
+        {
+            using (var context = ApplicationDbContext.Create())
+            {
+                var podcast = context.Podcasts.Find(id);
+
+                if (podcast == null)
+                {
+                    return false;
+                }
+
+                context.Podcasts.Remove(podcast);
+                return context.SaveChanges() == 1;
+            }
+        }
     }
 }
