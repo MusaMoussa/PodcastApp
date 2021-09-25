@@ -71,9 +71,26 @@ namespace PodcastApp.Services
                     Description = podcast.Description,
                     Author = podcast.Author,
                     ImageUrl = podcast.ImageUrl,
+                    WebsiteUrl = podcast.WebsiteUrl,
                     Category = podcast.Category,
                     Rating = podcast.Rating,
                 };
+            }
+        }
+
+        public bool DeletePodcast(int id)
+        {
+            using (var context = ApplicationDbContext.Create())
+            {
+                var podcast = context.Podcasts.Find(id);
+
+                if (podcast == null)
+                {
+                    return false;
+                }
+
+                context.Podcasts.Remove(podcast);
+                return context.SaveChanges() == 1;
             }
         }
     }
