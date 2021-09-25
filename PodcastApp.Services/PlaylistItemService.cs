@@ -46,18 +46,28 @@ namespace PodcastApp.Services
                     ctx
                         .PlaylistItems
                         .Include(e => e.Podcast)
-                        .Where(e => e.UserId == _userId)
-                        .Select(
-                            e =>
-                                new PlaylistItemDetail
-                                {
-                                    UserId = e.UserId,
-                                    PodcastId = e.PodcastId,
-                                    EpisodeId = e.EpisodeId,
-                                    PlaybackPositionInSeconds = e.PlaybackPositionInSeconds
-                                }
-                        );
-                return query.ToArray();
+                        .Where(e => e.UserId == _userId);
+
+                var output = new List<PlaylistItemDetail>();
+
+                foreach (var item in query)
+                {
+                    var episode = item.Podcast.GetEpisode(item.EpisodeId);
+                    var detail = new PlaylistItemDetail
+                    {
+                        Id = item.Id,
+                        UserId = item.UserId,
+                        PodcastId = item.PodcastId,
+                        PodcastTitle = item.Podcast.Title,
+                        EpisodeId = item.EpisodeId,
+                        EpisodeTitle = episode.Title,
+                        AudioUrl = episode.AudioUrl,
+                        PlaybackPositionInSeconds = item.PlaybackPositionInSeconds
+                    };
+                    output.Add(detail);
+                }
+
+                return output;
             }
         }
 
@@ -66,17 +76,29 @@ namespace PodcastApp.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var entity =
+                var item =
                     ctx
                         .PlaylistItems
-                        .Single(e => e.Id == id && e.UserId == _userId);
+                        .SingleOrDefault(e => e.Id == id && e.UserId == _userId);
+
+                if (item == null)
+                {
+                    return null;
+                }
+
+                var episode = item.Podcast.GetEpisode(item.EpisodeId);
+
                 return
                     new PlaylistItemDetail
                     {
-                        UserId = entity.UserId,
-                        PodcastId = entity.PodcastId,
-                        EpisodeId = entity.EpisodeId,
-                        PlaybackPositionInSeconds = entity.PlaybackPositionInSeconds
+                        Id = item.Id,
+                        UserId = item.UserId,
+                        PodcastId = item.PodcastId,
+                        PodcastTitle = item.Podcast.Title,
+                        EpisodeId = item.EpisodeId,
+                        EpisodeTitle = episode.Title,
+                        AudioUrl = episode.AudioUrl,
+                        PlaybackPositionInSeconds = item.PlaybackPositionInSeconds
                     };
             }
         }
@@ -89,8 +111,12 @@ namespace PodcastApp.Services
                 var entity =
                     ctx
                         .PlaylistItems
-                        .Single(e => e.Id == model.Id && e.UserId == _userId);
+                        .SingleOrDefault(e => e.Id == model.Id && e.UserId == _userId);
 
+                if (entity == null)
+                {
+                    return false;
+                }
 
                 entity.PlaybackPositionInSeconds = model.PlaybackPositionInSeconds;
 
@@ -106,7 +132,12 @@ namespace PodcastApp.Services
                 var entity =
                     ctx
                         .PlaylistItems
-                        .Single(e => e.Id == PlaylistItemId && e.UserId == _userId);
+                        .SingleOrDefault(e => e.Id == PlaylistItemId && e.UserId == _userId);
+
+                if (entity == null)
+                {
+                    return false;
+                }
 
                 ctx.PlaylistItems.Remove(entity);
 
