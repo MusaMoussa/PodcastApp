@@ -55,6 +55,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubscriptionCreate.cs" />
+    <Compile Include="SubscriptionDetail.cs" />
+    <Compile Include="SubscriptionEdit.cs" />
+    <Compile Include="SubscriptionListItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
