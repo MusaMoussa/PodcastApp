@@ -82,7 +82,6 @@ namespace PodcastApp.Data
             var channel = XElement.Parse(XmlCache).Element("channel");
             var episodes = channel.Descendants("item").Select(item => new Episode()
             {
-                Podcast = this,
                 EpisodeId = item.Element("guid").Value,
                 Title = item.Element("title").Value,
                 Description = item.Element("description").Value,
@@ -104,10 +103,9 @@ namespace PodcastApp.Data
     public class Episode
     {
         public string EpisodeId { get; set; }
-        public Podcast Podcast { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
         public DateTimeOffset PublishDate { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }     
         public string AudioUrl { get; set; }
         public string ImageUrl { get; set; }
         public string WebsiteUrl { get; set; }
