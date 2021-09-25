@@ -92,6 +92,7 @@ namespace PodcastApp.Services
                 var episodes = podcast.Episodes.Select(e => new EpisodeListItem()
                 {
                     EpisodeId = e.EpisodeId,
+                    PublishDate = e.PublishDate.Date.ToLongDateString(),
                     Title = e.Title,
                     AudioUrl = e.AudioUrl
                 });
@@ -100,7 +101,7 @@ namespace PodcastApp.Services
             }
         }
 
-        public Episode GetEpisodeForPodcast(int id, string episodeId)
+        public EpisodeDetail GetEpisodeForPodcast(int id, string episodeId)
         {
             using (var context = ApplicationDbContext.Create())
             {
@@ -112,7 +113,22 @@ namespace PodcastApp.Services
                 }
 
                 var episode = podcast.GetEpisode(episodeId);
-                return episode;
+
+                if (episode == null)
+                {
+                    return null;
+                }
+
+                return new EpisodeDetail()
+                {
+                    EpisodeId = episode.EpisodeId,
+                    PublishDate = episode.PublishDate.Date.ToLongDateString(),
+                    Title = episode.Title,
+                    Description = episode.Description,
+                    AudioUrl = episode.AudioUrl,
+                    ImageUrl = episode.ImageUrl,
+                    WebsiteUrl = episode.WebsiteUrl
+                };
             }
         }
 

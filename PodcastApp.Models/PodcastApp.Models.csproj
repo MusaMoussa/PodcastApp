@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EpisodeDetail.cs" />
     <Compile Include="EpisodeListItem.cs" />
     <Compile Include="PodcastCreate.cs" />
     <Compile Include="PodcastDetail.cs" />
