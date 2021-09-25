@@ -4,36 +4,74 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
+using PodcastApp.Data;
+using PodcastApp.Models;
+using PodcastApp.Services;
 
 namespace PodcastApp.WebApi.Controllers
 {
+    [Authorize]
     public class ReviewController : ApiController
     {
-        // GET: api/Review
-        public IEnumerable<string> Get()
+        private ReviewService CreateReviewService()
         {
-            return new string[] { "value1", "value2" };
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var reviewService = new ReviewService(userId);
+            return reviewService;
+        }
+        // GET: api/Review/5
+        public IHttpActionResult Get()
+        {
+            ReviewService reviewService = CreateReviewService();
+            var reviews = reviewService.GetReviews();
+            return Ok(reviews);
         }
 
-        // GET: api/Review/5
-        public string Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            ReviewService reviewService = CreateReviewService();
+            var reviews = reviewService.GetReviewsByPodcastId(id);
+            return Ok(reviews);
         }
 
         // POST: api/Review
-        public void Post([FromBody]string value)
+        public IHttpActionResult Post(ReviewCreate review)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = CreateReviewService();
+
+            if (!service.CreateReview(review))
+                return InternalServerError();
+
+            return Ok();
         }
 
         // PUT: api/Review/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(ReviewEdit review)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = CreateReviewService();
+
+            if (!service.UpdateReview(review))
+                return InternalServerError();
+
+            return Ok();
         }
 
         // DELETE: api/Review/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            var service = CreateReviewService();
+
+            if (!service.DeleteReview(id))
+                return InternalServerError();
+
+            return Ok();
         }
     }
 }

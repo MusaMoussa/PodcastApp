@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using PodcastApp.Models;
+using PodcastApp.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,31 +12,65 @@ namespace PodcastApp.WebApi.Controllers
 {
     public class PlaylistItemController : ApiController
     {
-        // GET: api/PlaylistItem
-        public IEnumerable<string> Get()
+        private PlaylistItemService CreatePlaylistItemService()
         {
-            return new string[] { "value1", "value2" };
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var playlistItemService = new PlaylistItemService(userId);
+            return playlistItemService;
         }
 
-        // GET: api/PlaylistItem/5
-        public string Get(int id)
+        // POST -- CREATE
+        public IHttpActionResult Post(PlaylistItemCreate playlistItem)
         {
-            return "value";
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = CreatePlaylistItemService();
+
+            if (!service.CreatePlaylistItem(playlistItem))
+                return InternalServerError();
+            return Ok();
         }
 
-        // POST: api/PlaylistItem
-        public void Post([FromBody]string value)
+        // GET All -- READ ALL
+        public IHttpActionResult Get()
         {
+            PlaylistItemService playlistItemService = CreatePlaylistItemService();
+            var playlistItems = playlistItemService.GetPlaylistItems();
+            return Ok(playlistItems);
         }
 
-        // PUT: api/PlaylistItem/5
-        public void Put(int id, [FromBody]string value)
+        // GET by id  -- READ by id
+        public IHttpActionResult Get(int id)
         {
+            PlaylistItemService playlistItemService = CreatePlaylistItemService();
+            var playlistItem = playlistItemService.GetPlaylistItemById(id);
+            return Ok(playlistItem);
         }
 
-        // DELETE: api/PlaylistItem/5
-        public void Delete(int id)
+        // PUT -- UPDATE
+        public IHttpActionResult Put(PlaylistItemEdit playlistItem)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = CreatePlaylistItemService();
+
+            if (!service.UpdatePlaylistItem(playlistItem))
+                return InternalServerError();
+
+            return Ok();
+        }
+
+        // DELETE
+        public IHttpActionResult Delete(int id)
+        {
+            var service = CreatePlaylistItemService();
+
+            if (!service.DeletePlaylistItem(id))
+                return InternalServerError();
+
+            return Ok();
         }
     }
 }
