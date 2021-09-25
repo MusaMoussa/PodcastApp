@@ -9,7 +9,7 @@ using System.Data.Entity;
 
 namespace PodcastApp.Services
 {
-   public class SubscriptionService
+    public class SubscriptionService
     {
         private readonly Guid _userId;
 
@@ -47,9 +47,11 @@ namespace PodcastApp.Services
                     .Select(e =>
                     new SubscriptionListItem
                     {
+                        Id = e.Id,
                         UserId = e.UserId,
                         PodcastId = e.PodcastId,
-                        Title = e.Podcast.Title
+                        Title = e.Podcast.Title,
+                        AutoAddNewEpisodes = e.AutoAddNewEpisodes
                     });
                 return query.ToArray();
             }
@@ -59,38 +61,48 @@ namespace PodcastApp.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var entity =
+                var subscription =
                     ctx
                     .Subscriptions
                     .Include(s => s.Podcast)
-                    .Single(e => e.Id == id && e.UserId == _userId);
-                  
+                    .SingleOrDefault(e => e.Id == id && e.UserId == _userId);
+
+                if (subscription == null)
+                {
+                    return null;
+                }
+
                 return
 
                     new SubscriptionDetail
                     {
-                        UserId = entity.UserId,
-                        PodcastId = entity.PodcastId,
-                        Title = entity.Podcast.Title,
-                        ImageUrl = entity.Podcast.ImageUrl
+                        UserId = subscription.UserId,
+                        PodcastId = subscription.PodcastId,
+                        Title = subscription.Podcast.Title,
+                        ImageUrl = subscription.Podcast.ImageUrl,
+                        AutoAddNewEpisodes = subscription.AutoAddNewEpisodes
                     };
-                
+
             }
         }
 
         public bool UpdateSubscription(SubscriptionEdit model)
         {
-            using(var ctx = new ApplicationDbContext())
+            using (var ctx = new ApplicationDbContext())
             {
                 var entity =
                     ctx
                     .Subscriptions
-                    .Single(e => e.Id == model.Id && e.UserId == _userId);
+                    .SingleOrDefault(e => e.Id == model.Id && e.UserId == _userId);
+
+                if (entity == null)
+                {
+                    return false;
+                }
 
                 entity.AutoAddNewEpisodes = model.AutoAddNewEpisodes;
 
                 return ctx.SaveChanges() == 1;
-
             }
         }
 
@@ -101,7 +113,13 @@ namespace PodcastApp.Services
                 var entity =
                     ctx
                     .Subscriptions
-                    .Single(e => e.Id == subscriptionId && e.UserId == _userId);
+                    .SingleOrDefault(e => e.Id == subscriptionId && e.UserId == _userId);
+
+                if (entity == null)
+                {
+                    return false;
+                }
+
                 ctx.Subscriptions.Remove(entity);
                 return ctx.SaveChanges() == 1;
             }

@@ -78,6 +78,60 @@ namespace PodcastApp.Services
             }
         }
 
+        public IEnumerable<EpisodeListItem> GetEpisodesByPodcastId(int id)
+        {
+            using (var context = ApplicationDbContext.Create())
+            {
+                var podcast = context.Podcasts.Find(id);
+
+                if (podcast == null)
+                {
+                    return null;
+                }
+
+                var episodes = podcast.Episodes.Select(e => new EpisodeListItem()
+                {
+                    EpisodeId = e.EpisodeId,
+                    PublishDate = e.PublishDate.Date.ToLongDateString(),
+                    Title = e.Title,
+                    AudioUrl = e.AudioUrl
+                });
+
+                return episodes.ToArray();
+            }
+        }
+
+        public EpisodeDetail GetEpisodeForPodcast(int id, string episodeId)
+        {
+            using (var context = ApplicationDbContext.Create())
+            {
+                var podcast = context.Podcasts.Find(id);
+
+                if (podcast == null)
+                {
+                    return null;
+                }
+
+                var episode = podcast.GetEpisode(episodeId);
+
+                if (episode == null)
+                {
+                    return null;
+                }
+
+                return new EpisodeDetail()
+                {
+                    EpisodeId = episode.EpisodeId,
+                    PublishDate = episode.PublishDate.Date.ToLongDateString(),
+                    Title = episode.Title,
+                    Description = episode.Description,
+                    AudioUrl = episode.AudioUrl,
+                    ImageUrl = episode.ImageUrl,
+                    WebsiteUrl = episode.WebsiteUrl
+                };
+            }
+        }
+
         public bool DeletePodcast(int id)
         {
             using (var context = ApplicationDbContext.Create())

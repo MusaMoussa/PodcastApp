@@ -20,14 +20,15 @@ namespace PodcastApp.WebApi.Controllers
             var reviewService = new ReviewService(userId);
             return reviewService;
         }
-        // GET: api/Review/5
+
         public IHttpActionResult Get()
         {
             ReviewService reviewService = CreateReviewService();
-            var reviews = reviewService.GetReviews();
+            var reviews = reviewService.GetReviewsForUser();
             return Ok(reviews);
         }
 
+        // GET: api/Review/5
         public IHttpActionResult Get(int id)
         {
             ReviewService reviewService = CreateReviewService();

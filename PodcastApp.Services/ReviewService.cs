@@ -19,23 +19,30 @@ namespace PodcastApp.Services
 
         public bool CreateReview(ReviewCreate model)
         {
-            var query =
-                new Review()
-                {
-                    UserId = _userId,
-                    Rating = model.Rating,
-                    Text = model.Text,
-                    PodcastId = model.PodcastId
-                };
-
             using (var ctx = new ApplicationDbContext())
             {
-                ctx.Reviews.Add(query);
+                var podcast = ctx.Podcasts.Find(model.PodcastId);
+
+                if (podcast == null)
+                {
+                    return false;
+                }
+
+                var review =
+                    new Review()
+                    {
+                        UserId = _userId,
+                        Rating = model.Rating,
+                        Text = model.Text,
+                        PodcastId = model.PodcastId
+                    };
+
+                ctx.Reviews.Add(review);
                 return ctx.SaveChanges() == 1;
             }
         }
 
-        public IEnumerable<ReviewListItem> GetReviews()
+        public IEnumerable<ReviewListItem> GetReviewsForUser()
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -81,13 +88,18 @@ namespace PodcastApp.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var query =
+                var review =
                     ctx
                         .Reviews
-                        .Single(e => e.Id == model.Id && e.UserId == _userId);
+                        .SingleOrDefault(e => e.Id == model.Id && e.UserId == _userId);
 
-                query.Rating = model.Rating;
-                query.Text = model.Text;
+                if (review == null)
+                {
+                    return false;
+                }
+
+                review.Rating = model.Rating;
+                review.Text = model.Text;
 
                 return ctx.SaveChanges() == 1;
             }
@@ -95,22 +107,22 @@ namespace PodcastApp.Services
 
         public bool DeleteReview(int id)
         {
-            using(var ctx = new ApplicationDbContext())
+            using (var ctx = new ApplicationDbContext())
             {
-                var query =
+                var review =
                     ctx
                         .Reviews
-                        .Single(e => e.Id == id && e.UserId == _userId);
+                        .SingleOrDefault(e => e.Id == id && e.UserId == _userId);
 
-                ctx.Reviews.Remove(query);
+                if (review == null)
+                {
+                    return false;
+                }
+
+                ctx.Reviews.Remove(review);
 
                 return ctx.SaveChanges() == 1;
             }
         }
     }
-
-   
-
-
-
 }

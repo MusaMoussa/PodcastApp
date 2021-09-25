@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PodcastApp.Models
 {
-	public class PlaylistItemCreate
-	{
-        [Required]
-        public int PodcastId { get; set; }
-
-        [Required]
+    public class EpisodeListItem
+    {
         public string EpisodeId { get; set; }
+        public string PublishDate { get; set; }
+        public string Title { get; set; }
+        public string AudioUrl { get; set; }
     }
 }

@@ -45,6 +45,11 @@ namespace PodcastApp.WebApi.Controllers
         {
             PlaylistItemService playlistItemService = CreatePlaylistItemService();
             var playlistItem = playlistItemService.GetPlaylistItemById(id);
+
+            if (playlistItem == null)
+            {
+                return NotFound();
+            }
             return Ok(playlistItem);
         }
 

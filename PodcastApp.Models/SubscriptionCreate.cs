@@ -10,9 +10,6 @@ namespace PodcastApp.Models
     public class SubscriptionCreate
     {
         [Required]
-        public Guid UserId { get; set; }
-
-        [Required]
         public int PodcastId { get; set; }
     }
 }

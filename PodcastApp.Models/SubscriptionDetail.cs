@@ -12,5 +12,6 @@ namespace PodcastApp.Models
         public int PodcastId { get; set; }
         public object Title { get; set; }
         public string ImageUrl { get; set; }
+        public object AutoAddNewEpisodes { get; set; }
     }
 }

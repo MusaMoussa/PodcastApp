@@ -44,6 +44,34 @@ namespace PodcastApp.WebApi.Controllers
             }
         }
 
+        // GET: api/Podcast/{id}/Episode
+        [HttpGet]
+        [Route("api/Podcast/{id}/Episode")]
+        public IHttpActionResult GetAllEpisodesForPodcast(int id)
+        {
+            var service = CreatePodcastService();
+            var episodes = service.GetEpisodesByPodcastId(id);
+            return Ok(episodes);
+        }
+
+        // GET: api/Podcast/{id}/Episode?episodeId={episodeId}
+        [HttpGet]
+        [Route("api/Podcast/{id}/Episode")]
+        public IHttpActionResult GetEpisodeForPodcast(int id, string episodeId)
+        {
+            var service = CreatePodcastService();
+            var episode = service.GetEpisodeForPodcast(id, episodeId);
+
+            if (episode == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(episode);
+            }
+        }
+
         // POST: api/Podcast
         public IHttpActionResult Post([FromBody] PodcastCreate model)
         {
