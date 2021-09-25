@@ -71,6 +71,7 @@ namespace PodcastApp.Services
                     Description = podcast.Description,
                     Author = podcast.Author,
                     ImageUrl = podcast.ImageUrl,
+                    WebsiteUrl = podcast.WebsiteUrl,
                     Category = podcast.Category,
                     Rating = podcast.Rating,
                 };

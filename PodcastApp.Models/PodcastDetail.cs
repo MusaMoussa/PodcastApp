@@ -16,5 +16,6 @@ namespace PodcastApp.Models
         public string ImageUrl { get; set; }
         public string Category { get; set; }
         public double Rating { get; set; }
+        public string WebsiteUrl { get; set; }
     }
 }
