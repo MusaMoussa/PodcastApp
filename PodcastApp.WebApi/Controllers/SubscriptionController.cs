@@ -20,7 +20,7 @@ namespace PodcastApp.WebApi.Controllers
             var subscriptionService = new SubscriptionService(userId);
             return subscriptionService;
         }
-        
+
         // GET: api/Subscription
         public IHttpActionResult Get()
         {
@@ -30,10 +30,15 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET: api/Subscription/5
-        public IHttpActionResult Get (int id)
+        public IHttpActionResult Get(int id)
         {
             SubscriptionService subscriptionService = CreateSubscriptionService();
             var subscription = subscriptionService.GetSubscriptionById(id);
+
+            if (subscription == null)
+            {
+                return NotFound();
+            }
             return Ok(subscription);
         }
 
