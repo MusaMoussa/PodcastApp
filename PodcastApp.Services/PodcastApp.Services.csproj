@@ -57,6 +57,7 @@
     <Compile Include="PlaylistItemService.cs" />
     <Compile Include="PodcastService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReviewService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
