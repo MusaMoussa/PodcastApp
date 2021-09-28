@@ -28,13 +28,34 @@ namespace PodcastApp.Services
 
         public bool CreatePodcast(PodcastCreate model)
         {
-            var podcast = Podcast.CreateFromRssUrl(model.RssUrl);
+            var podcast = CreateFromRssUrl(model.RssUrl);
 
             using (var context = ApplicationDbContext.Create())
             {
                 context.Podcasts.Add(podcast);
                 return context.SaveChanges() == 1;
             }
+        }
+
+        private Podcast CreateFromRssUrl(string rssUrl)
+        {
+            var podcast = new Podcast { RssUrl = rssUrl };
+            var rss = XElement.Load(rssUrl);
+            UpdatePodcastProperties(podcast, rss);
+            return podcast;
+        }
+
+        private void UpdatePodcastProperties(Podcast podcast, XElement rss)
+        {
+            podcast.XmlCache = rss.ToString();
+            var channel = rss.Element("channel");
+            podcast.Title = channel.Element("title").Value.Trim();
+            podcast.WebsiteUrl = channel.Element("link").Value.Trim();
+            podcast.Description = channel.Element(_itunes + "summary").Value.Trim();
+            podcast.Author = channel.Element(_itunes + "author").Value.Trim();
+            podcast.ImageUrl = channel.Element("image").Element("url").Value.Trim();
+            podcast.Category = channel.Element(_itunes + "category").Attribute("text").Value.Trim();
+            podcast.ClearEpisodes();
         }
 
         public IEnumerable<PodcastListItem> GetAllPodcasts()
@@ -152,15 +173,8 @@ namespace PodcastApp.Services
                 if (latestEpisodeIds.Count > 0)
                 {
                     // Update Podcast Properties
-                    podcast.XmlCache = updatedRss.ToString();
-                    var channel = updatedRss.Element("channel");
-                    podcast.Title = channel.Element("title").Value.Trim();
-                    podcast.WebsiteUrl = channel.Element("link").Value.Trim();
-                    podcast.Description = channel.Element(_itunes + "summary").Value.Trim();
-                    podcast.Author = channel.Element(_itunes + "author").Value.Trim();
-                    podcast.ImageUrl = channel.Element("image").Element("url").Value.Trim();
-                    podcast.Category = channel.Element(_itunes + "category").Attribute("text").Value.Trim();
-                    podcast.ClearEpisodes();
+                    UpdatePodcastProperties(podcast, updatedRss);
+                    context.SaveChanges();
 
                     // Add latest episodes to every subscriber's playlist
                     foreach (var subscription in podcast.Subscriptions)

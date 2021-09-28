@@ -11,26 +11,6 @@ namespace PodcastApp.Data
     {
         private static readonly XNamespace _itunes = "http://www.itunes.com/dtds/podcast-1.0.dtd";
 
-        public static Podcast CreateFromRssUrl(string rssUrl)
-        {
-            var rss = XElement.Load(rssUrl);
-            var channel = rss.Element("channel");
-
-            var podcast = new Podcast
-            {
-                RssUrl = rssUrl,
-                XmlCache = rss.ToString(),
-                Title = channel.Element("title").Value.Trim(),
-                WebsiteUrl = channel.Element("link").Value.Trim(),
-                Description = channel.Element(_itunes + "summary").Value.Trim(),
-                Author = channel.Element(_itunes + "author").Value.Trim(),
-                ImageUrl = channel.Element("image").Element("url").Value.Trim(),
-                Category = channel.Element(_itunes + "category").Attribute("text").Value.Trim()
-            };
-
-            return podcast;
-        }
-
         [Key]
         public int Id { get; set; }
 
