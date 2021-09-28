@@ -10,6 +10,7 @@ namespace PodcastApp.Services
 {
     public class PodcastService
     {
+        private static readonly XNamespace _itunes = "http://www.itunes.com/dtds/podcast-1.0.dtd";
         private readonly Guid _userId;
 
         public PodcastService(Guid userId)
@@ -152,6 +153,13 @@ namespace PodcastApp.Services
                 {
                     // Update Podcast Properties
                     podcast.XmlCache = updatedRss.ToString();
+                    var channel = updatedRss.Element("channel");
+                    podcast.Title = channel.Element("title").Value.Trim();
+                    podcast.WebsiteUrl = channel.Element("link").Value.Trim();
+                    podcast.Description = channel.Element(_itunes + "summary").Value.Trim();
+                    podcast.Author = channel.Element(_itunes + "author").Value.Trim();
+                    podcast.ImageUrl = channel.Element("image").Element("url").Value.Trim();
+                    podcast.Category = channel.Element(_itunes + "category").Attribute("text").Value.Trim();
                     podcast.ClearEpisodes();
 
                     // Add latest episodes to every subscriber's playlist
