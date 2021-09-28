@@ -20,7 +20,7 @@ namespace PodcastApp.WebApi.Controllers
         /// <summary>
         /// Get all subscriptions for a user
         /// </summary>
-        /// /// <returns>SubscriptionListItem</returns>
+        /// <returns>SubscriptionListItem</returns>
         public IHttpActionResult Get()
         {
             SubscriptionService subscriptionService = CreateSubscriptionService();
@@ -32,7 +32,7 @@ namespace PodcastApp.WebApi.Controllers
         /// <summary>
         /// Get a subscription by id
         /// </summary>
-        /// /// <returns>SubscriptionDetail</returns>
+        /// <returns>SubscriptionDetail</returns>
         public IHttpActionResult Get(int id)
         {
             SubscriptionService subscriptionService = CreateSubscriptionService();
