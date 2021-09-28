@@ -18,6 +18,10 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET: api/Podcast
+        /// <summary>
+        /// Get all podcasts
+        /// </summary>
+        /// <returns>PodcastListItem</returns>
         public IHttpActionResult Get()
         {
             var service = CreatePodcastService();
@@ -26,6 +30,10 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET: api/Podcast/5
+        /// <summary>
+        /// Get a podcast by id
+        /// </summary>
+        /// <returns>PodcastDetail</returns>
         public IHttpActionResult Get(int id)
         {
             var service = CreatePodcastService();
@@ -42,6 +50,10 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET: api/Podcast/{id}/Episode
+        /// <summary>
+        /// Get all episodes for a podcast by id
+        /// </summary>
+        /// <returns>EpisodeListItem</returns>
         [HttpGet]
         [Route("api/Podcast/{id}/Episode")]
         public IHttpActionResult GetAllEpisodesForPodcast(int id)
@@ -52,6 +64,10 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET: api/Podcast/{id}/Episode?episodeId={episodeId}
+        /// <summary>
+        /// Gets detailed information for an episode of a podcast
+        /// </summary>
+        /// <returns>EpisodeListItem</returns>
         [HttpGet]
         [Route("api/Podcast/{id}/Episode")]
         public IHttpActionResult GetEpisodeForPodcast(int id, string episodeId)
@@ -70,6 +86,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // POST: api/Podcast
+        /// <summary>
+        /// Adds a podcast to the database
+        /// </summary>
         public IHttpActionResult Post([FromBody] PodcastCreate model)
         {
             if (model == null)
@@ -111,6 +130,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // PUT: api/Podcast/5
+        /// <summary>
+        /// Updates a podcast and adds new PlaylistItems for subscribers
+        /// </summary>
         public IHttpActionResult Put(int id)
         {
             var service = CreatePodcastService();
@@ -126,6 +148,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // DELETE: api/Podcast/5
+        /// <summary>
+        /// Deletes a podcast from the database
+        /// </summary>
         public IHttpActionResult Delete(int id)
         {
             var service = CreatePodcastService();
