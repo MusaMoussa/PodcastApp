@@ -1,39 +1,95 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using Microsoft.AspNet.Identity;
+using PodcastApp.Models;
+using PodcastApp.Services;
+using System;
 using System.Web.Http;
 
 namespace PodcastApp.WebApi.Controllers
 {
+    [Authorize]
     public class SubscriptionController : ApiController
     {
-        // GET: api/Subscription
-        public IEnumerable<string> Get()
+        private SubscriptionService CreateSubscriptionService()
         {
-            return new string[] { "value1", "value2" };
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var subscriptionService = new SubscriptionService(userId);
+            return subscriptionService;
+        }
+
+        // GET: api/Subscription
+        /// <summary>
+        /// Get all subscriptions for a user
+        /// </summary>
+        /// <returns>SubscriptionListItem</returns>
+        public IHttpActionResult Get()
+        {
+            SubscriptionService subscriptionService = CreateSubscriptionService();
+            var subscriptions = subscriptionService.GetSubscriptions();
+            return Ok(subscriptions);
         }
 
         // GET: api/Subscription/5
-        public string Get(int id)
+        /// <summary>
+        /// Get a subscription by id
+        /// </summary>
+        /// <returns>SubscriptionDetail</returns>
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            SubscriptionService subscriptionService = CreateSubscriptionService();
+            var subscription = subscriptionService.GetSubscriptionById(id);
+
+            if (subscription == null)
+            {
+                return NotFound();
+            }
+            return Ok(subscription);
         }
 
         // POST: api/Subscription
-        public void Post([FromBody]string value)
+        /// <summary>
+        /// Create a new subscription to a podcast
+        /// </summary>
+        public IHttpActionResult Post(SubscriptionCreate subscription)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = CreateSubscriptionService();
+
+            if (!service.CreateSubscription(subscription))
+                return InternalServerError();
+
+            return Ok();
         }
 
         // PUT: api/Subscription/5
-        public void Put(int id, [FromBody]string value)
+        /// <summary>
+        /// Update a subscription to a podcast
+        /// </summary>
+        public IHttpActionResult Put(SubscriptionEdit subscription)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = CreateSubscriptionService();
+
+            if (!service.UpdateSubscription(subscription))
+                return InternalServerError();
+
+            return Ok();
         }
 
         // DELETE: api/Subscription/5
-        public void Delete(int id)
+        /// <summary>
+        /// Delete a subscription to a podcast
+        /// </summary>
+        public IHttpActionResult Delete(int id)
         {
+            var service = CreateSubscriptionService();
+
+            if (!service.DeleteSubscription(id))
+                return InternalServerError();
+            return Ok();
         }
     }
 }
