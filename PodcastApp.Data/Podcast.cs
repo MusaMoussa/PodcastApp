@@ -77,6 +77,16 @@ namespace PodcastApp.Data
         public virtual List<Review> Reviews { get; set; }
         public virtual List<Subscription> Subscriptions { get; set; }
 
+        public void ClearEpisodes()
+        {
+            _episodes = null;
+        }
+
+        public Episode GetEpisode(string episodeId)
+        {
+            return Episodes.FirstOrDefault(e => e.EpisodeId == episodeId);
+        }
+
         private List<Episode> LoadEpisodes()
         {
             var channel = XElement.Parse(XmlCache).Element("channel");
@@ -92,11 +102,6 @@ namespace PodcastApp.Data
             });
 
             return episodes.ToList();
-        }
-
-        public Episode GetEpisode(string episodeId)
-        {
-            return Episodes.FirstOrDefault(e => e.EpisodeId == episodeId);
         }
     }
 

@@ -2,7 +2,9 @@
 using PodcastApp.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace PodcastApp.Services
 {
@@ -127,6 +129,72 @@ namespace PodcastApp.Services
                     WebsiteUrl = episode.WebsiteUrl
                 };
             }
+        }
+
+        public bool UpdatePodcast(int id)
+        {
+            using (var context = ApplicationDbContext.Create())
+            {
+                var podcast = context.Podcasts.Include(p => p.Subscriptions).SingleOrDefault(p => p.Id == id);
+
+                if (podcast == null)
+                {
+                    return false;
+                }
+
+                // Find latest episode ids
+                var updatedRss = XElement.Load(podcast.RssUrl);
+                string latestCachedEpisodeId = XElement.Parse(podcast.XmlCache).Element("channel").Element("item").Element("guid").Value;
+                List<string> latestEpisodeIds = GetLatestEpisodeIds(updatedRss, latestCachedEpisodeId);
+
+                // If we found new episode ids
+                if (latestEpisodeIds.Count > 0)
+                {
+                    // Update Podcast Properties
+                    podcast.XmlCache = updatedRss.ToString();
+                    podcast.ClearEpisodes();
+
+                    // Add latest episodes to every subscriber's playlist
+                    foreach (var subscription in podcast.Subscriptions)
+                    {
+                        if (subscription.AutoAddNewEpisodes)
+                        {
+                            foreach (string episodeId in latestEpisodeIds)
+                            {
+                                var playlistItem = new PlaylistItem
+                                {
+                                    UserId = subscription.UserId,
+                                    PodcastId = subscription.PodcastId,
+                                    EpisodeId = episodeId
+                                };
+                                context.PlaylistItems.Add(playlistItem);
+                            }
+                        }
+                    }
+
+                    context.SaveChanges();
+                }
+
+                return true;
+            }
+        }
+
+        private List<string> GetLatestEpisodeIds(XElement updatedRss, string lastKnownEpisodeId)
+        {
+            var output = new List<string>();
+            var items = updatedRss.Element("channel").Descendants("item");
+
+            foreach (var item in items)
+            {
+                string id = item.Element("guid").Value;
+                if (id == lastKnownEpisodeId)
+                {
+                    break;
+                }
+                output.Add(id);
+            }
+
+            return output;
         }
 
         public bool DeletePodcast(int id)
