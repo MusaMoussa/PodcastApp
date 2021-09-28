@@ -547,17 +547,44 @@
             Deletes a podcast from the database
             </summary>
         </member>
+        <member name="M:PodcastApp.WebApi.Controllers.ReviewController.Get">
+            <summary>
+            Gets all the reviews
+            </summary>
+            <returns>ReviewListItem</returns>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.ReviewController.Get(System.Int32)">
+            <summary>
+            Gets all the reviews for a specific podcast
+            </summary>
+            <returns>ReviewListItem</returns>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.ReviewController.Post(PodcastApp.Data.ReviewCreate)">
+            <summary>
+            Adds a review to the database
+            </summary>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.ReviewController.Put(PodcastApp.Models.ReviewEdit)">
+            <summary>
+            Updates a review the database
+            </summary>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.ReviewController.Delete(System.Int32)">
+            <summary>
+            Deletes a review from the database
+            </summary>
+        </member>
         <member name="M:PodcastApp.WebApi.Controllers.SubscriptionController.Get">
             <summary>
             Get all subscriptions for a user
             </summary>
-            /// <returns>SubscriptionListItem</returns>
+            <returns>SubscriptionListItem</returns>
         </member>
         <member name="M:PodcastApp.WebApi.Controllers.SubscriptionController.Get(System.Int32)">
             <summary>
             Get a subscription by id
             </summary>
-            /// <returns>SubscriptionDetail</returns>
+            <returns>SubscriptionDetail</returns>
         </member>
         <member name="M:PodcastApp.WebApi.Controllers.SubscriptionController.Post(PodcastApp.Models.SubscriptionCreate)">
             <summary>

@@ -66,6 +66,7 @@ namespace PodcastApp.Services
                 {
                     Id = podcast.Id,
                     Title = podcast.Title,
+                    ImageUrl = podcast.ImageUrl,
                     WebsiteUrl = podcast.WebsiteUrl
                 });
 
