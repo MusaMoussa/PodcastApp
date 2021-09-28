@@ -111,8 +111,18 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // PUT: api/Podcast/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(int id)
         {
+            var service = CreatePodcastService();
+
+            if (service.UpdatePodcast(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return InternalServerError();
+            }
         }
 
         // DELETE: api/Podcast/5
