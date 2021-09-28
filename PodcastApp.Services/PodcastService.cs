@@ -179,7 +179,7 @@ namespace PodcastApp.Services
                     context.SaveChanges();
 
                     // Add latest episodes to every subscriber's playlist
-                    List<PlaylistItem> items = createPlaylistItemsForSubscribers(podcast, latestEpisodeIds);
+                    List<PlaylistItem> items = CreatePlaylistItemsForSubscriptions(podcast.Subscriptions, latestEpisodeIds);
                     context.PlaylistItems.AddRange(items);
                     context.SaveChanges();
                 }
@@ -206,11 +206,11 @@ namespace PodcastApp.Services
             return output;
         }
 
-        private List<PlaylistItem> createPlaylistItemsForSubscribers(Podcast podcast, IEnumerable<string> latestEpisodeIds)
+        private List<PlaylistItem> CreatePlaylistItemsForSubscriptions(IEnumerable<Subscription> subscriptions, IEnumerable<string> latestEpisodeIds)
         {
             var output = new List<PlaylistItem>();
 
-            foreach (var subscription in podcast.Subscriptions)
+            foreach (var subscription in subscriptions)
             {
                 if (subscription.AutoAddNewEpisodes)
                 {
