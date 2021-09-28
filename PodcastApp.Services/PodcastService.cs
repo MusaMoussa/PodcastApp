@@ -177,23 +177,8 @@ namespace PodcastApp.Services
                     context.SaveChanges();
 
                     // Add latest episodes to every subscriber's playlist
-                    foreach (var subscription in podcast.Subscriptions)
-                    {
-                        if (subscription.AutoAddNewEpisodes)
-                        {
-                            foreach (string episodeId in latestEpisodeIds)
-                            {
-                                var playlistItem = new PlaylistItem
-                                {
-                                    UserId = subscription.UserId,
-                                    PodcastId = subscription.PodcastId,
-                                    EpisodeId = episodeId
-                                };
-                                context.PlaylistItems.Add(playlistItem);
-                            }
-                        }
-                    }
-
+                    List<PlaylistItem> items = createPlaylistItemsForSubscribers(podcast, latestEpisodeIds);
+                    context.PlaylistItems.AddRange(items);
                     context.SaveChanges();
                 }
 
@@ -214,6 +199,30 @@ namespace PodcastApp.Services
                     break;
                 }
                 output.Add(id);
+            }
+
+            return output;
+        }
+
+        private List<PlaylistItem> createPlaylistItemsForSubscribers(Podcast podcast, IEnumerable<string> latestEpisodeIds)
+        {
+            var output = new List<PlaylistItem>();
+
+            foreach (var subscription in podcast.Subscriptions)
+            {
+                if (subscription.AutoAddNewEpisodes)
+                {
+                    foreach (string episodeId in latestEpisodeIds)
+                    {
+                        var playlistItem = new PlaylistItem
+                        {
+                            UserId = subscription.UserId,
+                            PodcastId = subscription.PodcastId,
+                            EpisodeId = episodeId
+                        };
+                        output.Add(playlistItem);
+                    }
+                }
             }
 
             return output;
