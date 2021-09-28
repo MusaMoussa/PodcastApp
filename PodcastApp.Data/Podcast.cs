@@ -16,7 +16,7 @@ namespace PodcastApp.Data
             var rss = XElement.Load(rssUrl);
             var channel = rss.Element("channel");
 
-            var podcast = new Podcast()
+            var podcast = new Podcast
             {
                 RssUrl = rssUrl,
                 XmlCache = rss.ToString(),
@@ -90,7 +90,7 @@ namespace PodcastApp.Data
         private List<Episode> LoadEpisodes()
         {
             var channel = XElement.Parse(XmlCache).Element("channel");
-            var episodes = channel.Descendants("item").Select(item => new Episode()
+            var episodes = channel.Descendants("item").Select(item => new Episode
             {
                 EpisodeId = item.Element("guid").Value,
                 Title = item.Element("title").Value,
