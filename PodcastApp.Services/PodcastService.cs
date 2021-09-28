@@ -157,7 +157,9 @@ namespace PodcastApp.Services
         {
             using (var context = ApplicationDbContext.Create())
             {
-                var podcast = context.Podcasts.Include(p => p.Subscriptions).SingleOrDefault(p => p.Id == id);
+                var podcast = context.Podcasts
+                    .Include(p => p.Subscriptions)
+                    .SingleOrDefault(p => p.Id == id);
 
                 if (podcast == null)
                 {
