@@ -38,7 +38,7 @@ namespace PodcastApp.Services
         {
             using (var context = ApplicationDbContext.Create())
             {
-                var query = context.Podcasts.Select(podcast => new PodcastListItem()
+                var query = context.Podcasts.Select(podcast => new PodcastListItem
                 {
                     Id = podcast.Id,
                     Title = podcast.Title,
@@ -86,7 +86,7 @@ namespace PodcastApp.Services
                     return null;
                 }
 
-                var episodes = podcast.Episodes.Select(e => new EpisodeListItem()
+                var episodes = podcast.Episodes.Select(e => new EpisodeListItem
                 {
                     EpisodeId = e.EpisodeId,
                     PublishDate = e.PublishDate.Date.ToLongDateString(),
@@ -116,7 +116,7 @@ namespace PodcastApp.Services
                     return null;
                 }
 
-                return new EpisodeDetail()
+                return new EpisodeDetail
                 {
                     EpisodeId = episode.EpisodeId,
                     PublishDate = episode.PublishDate.Date.ToLongDateString(),
