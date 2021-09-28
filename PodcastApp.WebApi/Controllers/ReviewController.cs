@@ -17,6 +17,10 @@ namespace PodcastApp.WebApi.Controllers
             return reviewService;
         }
 
+        /// <summary>
+        /// Gets all the reviews
+        /// </summary>
+        /// <returns>ReviewListItem</returns>
         public IHttpActionResult Get()
         {
             ReviewService reviewService = CreateReviewService();
@@ -25,6 +29,10 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET: api/Review/5
+        /// <summary>
+        /// Gets all the reviews for a specific podcast
+        /// </summary>
+        /// <returns>ReviewListItem</returns>
         public IHttpActionResult Get(int id)
         {
             ReviewService reviewService = CreateReviewService();
@@ -33,6 +41,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // POST: api/Review
+        /// <summary>
+        /// Adds a review to the database
+        /// </summary>
         public IHttpActionResult Post(ReviewCreate review)
         {
             if (!ModelState.IsValid)
@@ -47,6 +58,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // PUT: api/Review/5
+        /// <summary>
+        /// Updates a review the database
+        /// </summary>
         public IHttpActionResult Put(ReviewEdit review)
         {
             if (!ModelState.IsValid)
@@ -61,6 +75,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // DELETE: api/Review/5
+        /// <summary>
+        /// Deletes a review from the database
+        /// </summary>
         public IHttpActionResult Delete(int id)
         {
             var service = CreateReviewService();
