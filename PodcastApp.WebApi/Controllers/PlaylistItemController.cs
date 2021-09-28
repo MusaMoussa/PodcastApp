@@ -16,6 +16,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // POST -- CREATE
+        /// <summary>
+        /// Add a new item to a user's playlist
+        /// </summary>
         public IHttpActionResult Post(PlaylistItemCreate playlistItem)
         {
             if (!ModelState.IsValid)
@@ -29,6 +32,10 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET All -- READ ALL
+        /// <summary>
+        /// Get all the item's from a user's playlist
+        /// </summary>
+        /// <returns>PlaylistItemDetail</returns>
         public IHttpActionResult Get()
         {
             PlaylistItemService playlistItemService = CreatePlaylistItemService();
@@ -37,6 +44,10 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET by id  -- READ by id
+        /// <summary>
+        /// Get detailed information for a playlist item
+        /// </summary>
+        /// <returns>PlaylistItemDetail</returns>
         public IHttpActionResult Get(int id)
         {
             PlaylistItemService playlistItemService = CreatePlaylistItemService();
@@ -50,6 +61,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // PUT -- UPDATE
+        /// <summary>
+        /// Updates information for a playlist item
+        /// </summary>
         public IHttpActionResult Put(PlaylistItemEdit playlistItem)
         {
             if (!ModelState.IsValid)
@@ -64,6 +78,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // DELETE
+        /// <summary>
+        /// Deletes a playlist item
+        /// </summary>
         public IHttpActionResult Delete(int id)
         {
             var service = CreatePlaylistItemService();

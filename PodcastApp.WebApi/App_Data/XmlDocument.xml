@@ -481,6 +481,33 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="M:PodcastApp.WebApi.Controllers.PlaylistItemController.Post(PodcastApp.Models.PlaylistItemCreate)">
+            <summary>
+            Add a new item to a user's playlist
+            </summary>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.PlaylistItemController.Get">
+            <summary>
+            Get all the item's from a user's playlist
+            </summary>
+            <returns>PlaylistItemDetail</returns>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.PlaylistItemController.Get(System.Int32)">
+            <summary>
+            Get detailed information for a playlist item
+            </summary>
+            <returns>PlaylistItemDetail</returns>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.PlaylistItemController.Put(PodcastApp.Models.PlaylistItemEdit)">
+            <summary>
+            Updates information for a playlist item
+            </summary>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.PlaylistItemController.Delete(System.Int32)">
+            <summary>
+            Deletes a playlist item
+            </summary>
+        </member>
         <member name="M:PodcastApp.WebApi.Controllers.PodcastController.Get">
             <summary>
             Get all podcasts
@@ -512,12 +539,39 @@
         </member>
         <member name="M:PodcastApp.WebApi.Controllers.PodcastController.Put(System.Int32)">
             <summary>
-            Updates a podcast and add new PlaylistItems for subscribers
+            Updates a podcast and adds new PlaylistItems for subscribers
             </summary>
         </member>
         <member name="M:PodcastApp.WebApi.Controllers.PodcastController.Delete(System.Int32)">
             <summary>
             Deletes a podcast from the database
+            </summary>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.SubscriptionController.Get">
+            <summary>
+            Get all subscriptions for a user
+            </summary>
+            /// <returns>SubscriptionListItem</returns>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.SubscriptionController.Get(System.Int32)">
+            <summary>
+            Get a subscription by id
+            </summary>
+            /// <returns>SubscriptionDetail</returns>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.SubscriptionController.Post(PodcastApp.Models.SubscriptionCreate)">
+            <summary>
+            Create a new subscription to a podcast
+            </summary>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.SubscriptionController.Put(PodcastApp.Models.SubscriptionEdit)">
+            <summary>
+            Update a subscription to a podcast
+            </summary>
+        </member>
+        <member name="M:PodcastApp.WebApi.Controllers.SubscriptionController.Delete(System.Int32)">
+            <summary>
+            Delete a subscription to a podcast
             </summary>
         </member>
     </members>
