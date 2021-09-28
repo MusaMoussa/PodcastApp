@@ -17,6 +17,10 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET: api/Subscription
+        /// <summary>
+        /// Get all subscriptions for a user
+        /// </summary>
+        /// /// <returns>SubscriptionListItem</returns>
         public IHttpActionResult Get()
         {
             SubscriptionService subscriptionService = CreateSubscriptionService();
@@ -25,6 +29,10 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // GET: api/Subscription/5
+        /// <summary>
+        /// Get a subscription by id
+        /// </summary>
+        /// /// <returns>SubscriptionDetail</returns>
         public IHttpActionResult Get(int id)
         {
             SubscriptionService subscriptionService = CreateSubscriptionService();
@@ -38,6 +46,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // POST: api/Subscription
+        /// <summary>
+        /// Create a new subscription to a podcast
+        /// </summary>
         public IHttpActionResult Post(SubscriptionCreate subscription)
         {
             if (!ModelState.IsValid)
@@ -52,6 +63,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // PUT: api/Subscription/5
+        /// <summary>
+        /// Update a subscription to a podcast
+        /// </summary>
         public IHttpActionResult Put(SubscriptionEdit subscription)
         {
             if (!ModelState.IsValid)
@@ -66,6 +80,9 @@ namespace PodcastApp.WebApi.Controllers
         }
 
         // DELETE: api/Subscription/5
+        /// <summary>
+        /// Delete a subscription to a podcast
+        /// </summary>
         public IHttpActionResult Delete(int id)
         {
             var service = CreateSubscriptionService();
