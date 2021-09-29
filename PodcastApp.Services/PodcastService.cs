@@ -168,9 +168,9 @@ namespace PodcastApp.Services
                 }
 
                 // Find latest episode ids
+                var cachedRss = XElement.Parse(podcast.XmlCache);
                 var updatedRss = XElement.Load(podcast.RssUrl);
-                string latestCachedEpisodeId = XElement.Parse(podcast.XmlCache).Element("channel").Element("item").Element("guid").Value;
-                List<string> latestEpisodeIds = GetLatestEpisodeIds(updatedRss, latestCachedEpisodeId);
+                List<string> latestEpisodeIds = GetLatestEpisodeIds(cachedRss, updatedRss);
 
                 // If we found new episode ids
                 if (latestEpisodeIds.Count > 0)
@@ -189,15 +189,16 @@ namespace PodcastApp.Services
             }
         }
 
-        private List<string> GetLatestEpisodeIds(XElement updatedRss, string lastKnownEpisodeId)
+        private List<string> GetLatestEpisodeIds(XElement cachedRss, XElement updatedRss)
         {
-            var output = new List<string>();
+            string latestCachedEpisodeId = cachedRss.Element("channel").Element("item").Element("guid").Value;
             var items = updatedRss.Element("channel").Descendants("item");
+            var output = new List<string>();
 
             foreach (var item in items)
             {
                 string id = item.Element("guid").Value;
-                if (id == lastKnownEpisodeId)
+                if (id == latestCachedEpisodeId)
                 {
                     break;
                 }
