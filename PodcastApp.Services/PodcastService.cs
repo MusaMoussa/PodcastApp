@@ -114,7 +114,7 @@ namespace PodcastApp.Services
                 var episodes = podcast.Episodes.Select(e => new EpisodeListItem
                 {
                     EpisodeId = e.EpisodeId,
-                    PublishDate = e.PublishDate.Date.ToLongDateString(),
+                    PublishDate = e.PublishDate,
                     Title = e.Title,
                     AudioUrl = e.AudioUrl
                 });
@@ -144,7 +144,7 @@ namespace PodcastApp.Services
                 return new EpisodeDetail
                 {
                     EpisodeId = episode.EpisodeId,
-                    PublishDate = episode.PublishDate.Date.ToLongDateString(),
+                    PublishDate = episode.PublishDate,
                     Title = episode.Title,
                     Description = episode.Description,
                     AudioUrl = episode.AudioUrl,
